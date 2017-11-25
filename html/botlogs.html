@@ -31,6 +31,9 @@
         <li class="nav-item">
           <a class="nav-link text-danger" href="/botlogs">Bot logs</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-danger" href="/m_manager">Member Manager</a>
+        </li>
       </ul>
     </div>
   </nav>
@@ -120,7 +123,7 @@
       </div>
       <div class="col-sm-8">
         <div class="list-group" id="logCollector">
-          
+
         </div>
       </div>
     </div>
@@ -155,18 +158,21 @@
       "a4336f",
       "52665e"
     ]
+
     function addLog(procName, lev, message) {
       var rightArrow = "<span style='color: #52665e'>></span>"
       if (shouldLog(lev)) {
         $("#logCollector").prepend(
           "<div class='logEntry list-group-item'> \
-          <span style='color: #"+ levelColors[lev] +"'>"+ levelMapping[lev] +"</span> " + rightArrow + " " + procName + " " + rightArrow + rightArrow + " <span style='color: #52665e'>" + message + " </span></div>"
+          <span style='color: #" + levelColors[lev] + "'>" +
+          levelMapping[lev] + "</span> " + rightArrow + " " + procName + " " + rightArrow + rightArrow +
+          " <span style='color: #52665e'>" + message + " </span></div>"
         )
       }
     }
-    addLog("panel.logClient", 4,"Connected to log server")
+    addLog("panel.logClient", 4, "Connected to log server")
     const socket = io('');
-    socket.on("log", function(log) {
+    socket.on("log", function (log) {
       addLog(log.proc, log.level, log.message);
       console.log(log)
     })

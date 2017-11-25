@@ -71,9 +71,17 @@ io.on('connection', function (socket) {
       })
     })
   }
+
+  socket.on("member.find", function(tf) {
+    tf.replyId = socket.id;
+    io.emit("bot.find", tf);
+  })
+  socket.on("bot.found", function (res) {
+    io.to(res.replyId).emit("member.found", res)
+  })
+
   socket.on("sendLogsSoon <3", function () {
     console.log("Bot connected!");
-    
   });
   socket.on("log", (d) => {
     io.emit("log", d)
