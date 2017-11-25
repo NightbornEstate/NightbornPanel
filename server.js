@@ -38,6 +38,13 @@ app.get('/botlogs', function (req, res) {
     res.end("Unauthorized")
   }
 });
+app.get('/m_manager', function (req, res) {
+  if (req.session.authed) {
+    res.sendfile(__dirname + '/html/memberOptions.html');
+  } else {
+    res.end("Unauthorized")
+  }
+});
 
 app.post("/auth", (req, res) => {
   var correctPw = "f1cb22cb622f3dd9d1f5e06cc2a1d0e920c40e6a4c2d2bf3dd0c7b52e975d6d9";

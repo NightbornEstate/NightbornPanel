@@ -74,8 +74,9 @@
         toFind: $("#mem").val()
       })
     })
-    socket.on("searchResult", function(r) {
-      
+    socket.on("member.found", function(r) {
+      var mem = r.found;
+      console.log(mem)
     })
   </script>
 </body>
