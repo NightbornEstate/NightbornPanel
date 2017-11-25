@@ -72,9 +72,11 @@
     socket.on("response.sysinfo", function (info) {
       console.log(info.ram.percent)
       $("#ramBar").text(info.ram.human);
+      $("#ramBar").stop();
       $("#ramBar").animate({
         "width": info.ram.percent
       }, 900);
+      $("#cpuBar").stop()
       $("#cpuBar").text(info.ram.percent);
       $("#cpuBar").animate({
         "width": info.ram.percent
