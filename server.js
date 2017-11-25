@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 app.use(express.static("assets"))
-server.listen(80);
+server.listen(8008);
 
 app.get('/', function (req, res) {
   res.sendfile(__dirname + '/html/login.html');
