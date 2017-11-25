@@ -68,17 +68,17 @@
     const socket = io('');
     setInterval( () => {
       socket.emit("request.sysinfo", "");
-    }, (1000))
+    }, (3000))
     socket.on("response.sysinfo", function (info) {
-      console.log(info)
+      console.log(info.ram.percent)
       $("#ramBar").text(info.ram.human);
       $("#ramBar").animate({
         "width": info.ram.percent
-      }, 400);
+      }, 900);
       $("#cpuBar").text(info.ram.percent);
       $("#cpuBar").animate({
         "width": info.ram.percent
-      }, 400);
+      }, 900);
 
 
     })
