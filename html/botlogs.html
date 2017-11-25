@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Hello, world!</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="/check.css">
+  <link href="https://fonts.googleapis.com/css?family=Fira+Mono" rel="stylesheet">
+</head>
+
+<body style="background-color: rgb(40, 44, 52)">
+  <nav class="navbar navbar-expand-sm navbar-dark text-white" style="background-color: rgb(30, 33, 40); margin-bottom:20px;">
+    <a class="navbar-brand" href="#">Nightborn Panel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item text-primary">
+          <a class="nav-link" href="/panel">Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-danger" href="/botlogs">Bot logs</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <style>
+    .logEntry {
+      background-color: rgb(30, 33, 40) !important;
+      color: white;
+      font-size: 0.9em;
+      font-family: 'Fira Mono', monospace;
+    }
+  </style>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card text-white" style="background-color: rgb(30, 33, 40);">
+          <div class="card-body">
+            <h4 class="card-title">Bot Logs</h4>
+            <div>
+              The bot logs show commands executed, restarts etc.
+            </div>
+            <hr>
+            <h5> ✅ Streaming Live </h5>
+            <hr>
+            <h5>Log Levels</h5>
+            <table class="table">
+              <tr>
+                <td style="border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  <input type="checkbox" id="lvl-1" class="switch_1" checked>
+                </td>
+                <td style="font-size: 20px; border-color: rgba(1, 1, 1, 0);; padding-bottom: 0px; padding-top: 5px;">
+                  Critical
+                </td>
+              </tr>
+              <tr>
+                <td style="border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  <input type="checkbox" id="lvl-2" class="switch_1" checked>
+                </td>
+                <td style="font-size: 20px; border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  Error
+                </td>
+              </tr>
+              <tr>
+                <td style="border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  <input type="checkbox" id="lvl-3" class="switch_1" checked>
+                </td>
+                <td style="font-size: 20px; border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  Warning
+                </td>
+              </tr>
+              <tr>
+                <td style="border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  <input type="checkbox" id="lvl-4" class="switch_1" checked>
+                </td>
+                <td style="font-size: 20px; border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  Debug
+                </td>
+              </tr>
+              <tr>
+                <td style="border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  <input type="checkbox" id="lvl-5" class="switch_1" checked>
+                </td>
+                <td style="font-size: 20px; border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  Info
+                </td>
+              </tr>
+              <tr>
+                <td style="border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  <input type="checkbox" id="lvl-6" class="switch_1" checked>
+                </td>
+                <td style="font-size: 20px; border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  Command
+                </td>
+              </tr>
+              <tr>
+                <td style="border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  <input type="checkbox" id="lvl-7" class="switch_1">
+                </td>
+                <td style="font-size: 20px; border-color: rgba(1, 1, 1, 0); padding-bottom: 0px; padding-top: 5px;">
+                  Spam
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <br>
+      </div>
+      <div class="col-sm-8">
+        <div class="list-group" id="logCollector">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+    crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    function shouldLog(level) {
+      var toLookFor = "#lvl-" + (level + 1);
+      return $(toLookFor).is(":checked")
+    }
+    var levelMapping = [
+      "critical",
+      "error",
+      "warn",
+      "debug",
+      "info",
+      "cmd",
+      "spam"
+    ]
+    var levelColors = [
+      "d41313",
+      "c22d33",
+      "d9b630",
+      "2572ac",
+      "a4336f",
+      "52665e"
+    ]
+    function addLog(procName, lev, message) {
+      var rightArrow = "<span style='color: #52665e'>></span>"
+      if (shouldLog(lev)) {
+        $("#logCollector").append(
+          "<div class='logEntry list-group-item'> \
+          <span style='color: #"+ levelColors[lev] +"'>"+ levelMapping[lev] +"</span> " + rightArrow + " " + procName + " " + rightArrow + rightArrow + " " + message + " </div>"
+        )
+      }
+    }
+    addLog("panel.logClient", 4,"Connected to log server")
+    const socket = io('');
+    socket.on("log", function(log) {
+      addLog(log.proc, log.level, log.message);
+      console.log(log)
+    })
+  </script>
+</body>
+
+</html>

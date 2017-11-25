@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Hello, world!</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  </head>
+  <body class="bg-dark">
+    <br><br><br>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+          <div class="card border-primary bg-dark text-white">
+            <div class="card-body">
+              <h4 class="card-title">Login to Nightborn Panel</h4>
+              <br><br>
+              <div class="form-group">
+                  <label for="discordUsername">Panel Username</label>
+                  <input class="form-control bg-dark border-primary text-white" id="discordUsername">
+                </div>
+              <div class="form-group">
+                  <label for="pass">Password</label>
+                  <input type="password" class="form-control bg-dark border-primary text-white" id="pass">
+                </div>
+              <button class="btn btn-primary" onclick="login2()">Continue -></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script>
+      function login2() {
+        $.post("/auth", { username: $("#discordUsername").val(), password: $("#pass").val()}, function (data, stat, jqXHR) {
+          window.location = "/panel"
+        })
+      }
+    </script>
+  </body>
+</html>

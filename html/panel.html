@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Hello, world!</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+    crossorigin="anonymous">
+</head>
+
+<body style="background-color: rgb(40, 44, 52)">
+  <nav class="navbar navbar-expand-sm navbar-dark text-white" style="background-color: rgb(30, 33, 40); margin-bottom:20px;">
+    <a class="navbar-brand" href="#">Nightborn Panel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+      aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item text-primary">
+          <a class="nav-link text-danger" href="/panel">Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/botlogs">Bot logs</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card text-white" style="background-color: rgb(30, 33, 40);">
+          <div class="card-body">
+            <h4 class="card-title">Server Load</h4>
+            <hr>
+            <h5> Ram </h5>
+            <div class="progress bg-dark">
+              <div class="progress-bar bg-danger" id="ramBar" role="progressbar" style="width: 0%;"></div>
+            </div>
+            <hr>
+            <h5> CPU Load </h5>
+            <div class="progress bg-dark">
+              <div class="progress-bar bg-danger" id="cpuBar" role="progressbar" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+    crossorigin="anonymous"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io('');
+    setInterval( () => {
+      socket.emit("request.sysinfo", "");
+    }, (1000))
+    socket.on("response.sysinfo", function (info) {
+      console.log(info)
+      $("#ramBar").text(info.ram.human);
+      $("#ramBar").animate({
+        "width": info.ram.percent
+      }, 400);
+      $("#cpuBar").text(info.ram.percent);
+      $("#cpuBar").animate({
+        "width": info.ram.percent
+      }, 400);
+
+
+    })
+  </script>
+</body>
+
+</html>
