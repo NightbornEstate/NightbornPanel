@@ -40,6 +40,7 @@
       color: white;
       font-size: 0.9em;
       font-family: 'Fira Mono', monospace;
+      letter-spacing: -1px;
     }
   </style>
   <div class="container-fluid">
@@ -157,9 +158,9 @@
     function addLog(procName, lev, message) {
       var rightArrow = "<span style='color: #52665e'>></span>"
       if (shouldLog(lev)) {
-        $("#logCollector").append(
+        $("#logCollector").prepend(
           "<div class='logEntry list-group-item'> \
-          <span style='color: #"+ levelColors[lev] +"'>"+ levelMapping[lev] +"</span> " + rightArrow + " " + procName + " " + rightArrow + rightArrow + " " + message + " </div>"
+          <span style='color: #"+ levelColors[lev] +"'>"+ levelMapping[lev] +"</span> " + rightArrow + " " + procName + " " + rightArrow + rightArrow + " <span style='color: #52665e'>" + message + " </span></div>"
         )
       }
     }
