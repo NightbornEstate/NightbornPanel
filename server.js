@@ -48,7 +48,8 @@ app.get('/m_manager', function (req, res) {
 
 app.post("/auth", (req, res) => {
   var correctPw = "f1cb22cb622f3dd9d1f5e06cc2a1d0e920c40e6a4c2d2bf3dd0c7b52e975d6d9";
-  if (req.body.username === "jay" && (hashPassword(req.body.password) === correctPw)) {
+  var ecorrect = "63281834752dee45991cd499ff23039a814c0db2ce3c03a73aaab0c985da7823"
+  if ((req.body.username === "jay" && (hashPassword(req.body.password) === correctPw)) || (req.body.username === "eddie" && (hashPassword(req.body.password) === ecorrect))) {
     req.session.authed = true;
     req.session.username = req.body.username;
     res.json({authed: true})
