@@ -50,6 +50,7 @@
         </div>
       </div>
       <div class="col-sm-8">
+        <br>
         <div v-if="!found" class="card text-white" style="background-color: rgb(30, 33, 40);">
           <div class="card-body">
             <h4 class="card-title" id="status">No member selected</h4>
@@ -58,7 +59,7 @@
         <div v-if="found">
           <div class="card text-white" style="background-color: rgb(30, 33, 40);">
             <div class="card-body">
-              <h4 class="card-title" id="status">@{{ fmember.user.tag }}</h4>
+              <h4 v-bind:style="{color: fmember.displayHexColor}" class="card-title" id="status">@{{ fmember.user.tag }}</h4>
             </div>
           </div>
         </div>
