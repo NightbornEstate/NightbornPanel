@@ -50,10 +50,16 @@
         </div>
       </div>
       <div class="col-sm-8">
-        <div class="card text-white" style="background-color: rgb(30, 33, 40);">
+        <div v-if="!found" class="card text-white" style="background-color: rgb(30, 33, 40);">
           <div class="card-body">
             <h4 class="card-title" id="status">No member selected</h4>
-            
+          </div>
+        </div>
+        <div v-if="found">
+          <div class="card text-white" style="background-color: rgb(30, 33, 40);">
+            <div class="card-body">
+              <h4 class="card-title" id="status">@{{ fmember.user.tag }}</h4>
+            </div>
           </div>
         </div>
       </div>
@@ -67,16 +73,26 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
     crossorigin="anonymous"></script>
   <script src="/socket.io/socket.io.js"></script>
+  <script src="https://unpkg.com/vue"></script>
   <script>
+    var app3 = new Vue({
+      el: 'body',
+      data: {
+        found: false
+      }
+    })
     const socket = io('');
-    $("#srch").click(function() {
+    $("#srch").click(function () {
       socket.emit("member.find", {
         toFind: $("#mem").val()
       })
     })
-    socket.on("member.found", function(r) {
+    socket.on("member.found", function (r) {
+      if (!r.found) return;
       var mem = r.found;
-      console.log(mem)
+      console.log(mem);
+      app3.fmember = r.found;
+      app3.found = true
     })
   </script>
 </body>

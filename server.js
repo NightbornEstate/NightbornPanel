@@ -10,11 +10,13 @@ var si = require("systeminformation");
 var sessionMiddleware = session({
   secret: Math.floor(Math.random() * 100000000000).toString(16)
 });
-io.use(function(socket, next) {
+io.use(function (socket, next) {
   sessionMiddleware(socket.request, socket.request.res, next);
 });
 app.use(sessionMiddleware);
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.raw());
 app.use(express.static("assets"))
@@ -29,7 +31,7 @@ app.get('/panel', function (req, res) {
   } else {
     res.end("Unauthorized")
   }
- 
+
 });
 app.get('/botlogs', function (req, res) {
   if (req.session.authed) {
@@ -52,15 +54,17 @@ app.post("/auth", (req, res) => {
   if ((req.body.username === "jay" && (hashPassword(req.body.password) === correctPw)) || (req.body.username === "eddie" && (hashPassword(req.body.password) === ecorrect))) {
     req.session.authed = true;
     req.session.username = req.body.username;
-    res.json({authed: true})
+    res.json({
+      authed: true
+    })
   }
-}) 
+})
 io.on('connection', function (socket) {
   console.log("Gotten connection")
   if (socket.request.session.authed) {
     console.log("Authed request")
     socket.on("request.sysinfo", () => {
-      Promise.all([si.mem(), si.currentLoad()]).then( (results) => {
+      Promise.all([si.mem(), si.currentLoad()]).then((results) => {
         var m = results[0];
         var cl = results[1];
         socket.emit("response.sysinfo", {
@@ -78,9 +82,12 @@ io.on('connection', function (socket) {
         });
       })
     })
+    socket.on("forward", (req) => {
+      io.emit(req.event, req.packet);
+    })
   }
 
-  socket.on("member.find", function(tf) {
+  socket.on("member.find", function (tf) {
     tf.replyId = socket.id;
     io.emit("bot.find", tf);
   })
