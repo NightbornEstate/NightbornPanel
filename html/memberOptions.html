@@ -63,7 +63,7 @@
         </div>
         <div v-if="found">
           <div class="row">
-            <div class="col-xs-6">
+            <div class="col-md-6">
               <div class="card text-white" style="background-color: rgb(30, 33, 40);">
                 <div class="card-body">
                   <h4 v-bind:style="{color: fmember.displayHexColor}" class="card-title" id="status">@{{ fmember.displayName }}</h4>
@@ -104,47 +104,101 @@
                 </div>
               </div>
             </div>
-            <div class="col-xs-6">
+            <div class="col-md-6">
+              <div class="card text-white" style="background-color: rgb(30, 33, 40);">
+                <div class="card-body">
+                  <h4 class="card-title" id="status">Member Info</h4>
 
+                  <table class="table">
+                    <tr>
+                      <th class="noBorderPls">
+                        Hoist
+                      </th>
+                      <td class="noBorderPls">
+                        {{ fmember.hoistRole }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="noBorderPls">
+                        Color
+                      </th>
+                      <td class="noBorderPls" v-bind:style="{color: fmember.displayHexColor}">
+                        {{ fmember.displayHexColor }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="noBorderPls">
+                        Joined Nightborn
+                      </th>
+                      <td class="noBorderPls">
+                        {{ moment(fmember.joinedTimestamp).fromNow() }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="noBorderPls">
+                        Roles
+                      </th>
+                      <td class="noBorderPls">
+                        {{ fmember.roles.length }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="noBorderPls">
+                        Nickname
+                      </th>
+                      <td class="noBorderPls">
+                        {{ fmember.displayName }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="noBorderPls">
+                        Highest Role
+                      </th>
+                      <td class="noBorderPls">
+                        {{ fmember.highestRole }}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-    crossorigin="anonymous"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="https://unpkg.com/vue"></script>
-  <script>
-    var app3 = new Vue({
-      el: '#v',
-      data: {
-        found: false,
-        fmember: null,
-        moment: moment
-      }
-    })
-    const socket = io('');
-    $("#srch").click(function () {
-      socket.emit("member.find", {
-        toFind: $("#mem").val()
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+      crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+      crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      var app3 = new Vue({
+        el: '#v',
+        data: {
+          found: false,
+          fmember: null,
+          moment: moment
+        }
       })
-    })
-    socket.on("member.found", function (r) {
-      if (!r.found) return;
-      var mem = r.found;
-      console.log(mem);
-      app3.fmember = r.found;
-      app3.found = true
-    })
-  </script>
+      const socket = io('');
+      $("#srch").click(function () {
+        socket.emit("member.find", {
+          toFind: $("#mem").val()
+        })
+      })
+      socket.on("member.found", function (r) {
+        if (!r.found) return;
+        var mem = r.found;
+        console.log(mem);
+        app3.fmember = r.found;
+        app3.found = true
+      })
+    </script>
 </body>
 
 </html>
