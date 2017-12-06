@@ -48,18 +48,63 @@
             <button id="srch" class="btn btn-outline-primary">Find</button>
           </div>
         </div>
+        <br>
       </div>
       <div class="col-sm-8">
-        <br>
         <div v-if="!found" class="card text-white" style="background-color: rgb(30, 33, 40);">
           <div class="card-body">
             <h4 class="card-title" id="status">No member selected</h4>
           </div>
         </div>
         <div v-if="found">
-          <div class="card text-white" style="background-color: rgb(30, 33, 40);">
-            <div class="card-body">
-              <h4 v-bind:style="{color: fmember.displayHexColor}" class="card-title" id="status">@{{ fmember.user.tag }}</h4>
+          <div class="row">
+            <div class="col-xs-6">
+              <div class="card text-white" style="background-color: rgb(30, 33, 40);">
+                <div class="card-body">
+                  <h4 v-bind:style="{color: fmember.displayHexColor}" class="card-title" id="status">@{{ fmember.displayName }}</h4>
+                  <h5 v-if="fmember.user.bot" class="text-primary">[BOT]</h5>
+                </div>
+              </div>
+              <br>
+              <div class="card text-white" style="background-color: rgb(30, 33, 40);">
+                <div class="card-body">
+                  <h4 class="card-title" id="status">Discord Info</h4>
+                  <style>
+                    .noBorderPls {
+                      border: none !important;
+                    }
+                  </style>
+                  <table class="table">
+                    <tr>
+                      <th class="noBorderPls">
+                        Tag
+                      </th>
+                      <td class="noBorderPls">
+                        {{ fmember.user.tag }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="noBorderPls">
+                        ID
+                      </th>
+                      <td class="noBorderPls">
+                        {{ fmember.user.id }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <th class="noBorderPls">
+                        Account created
+                      </th>
+                      <td class="noBorderPls">
+                        {{ moment(fmember.user.createdTimestamp).fromNow() }}
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-6">
+
             </div>
           </div>
         </div>
@@ -71,6 +116,7 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
     crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
     crossorigin="anonymous"></script>
   <script src="/socket.io/socket.io.js"></script>
