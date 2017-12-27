@@ -61,6 +61,7 @@ app.get("/callback", (req, res) => {
     console.log(e)
     return res.end("go away")
   }
+  if (tokendata.logintime - 2000 > Date.now()) return res.end("You're not authorized to do this.")
   if (!csp.hasPerm(tokendata.permissions, "nightborn.panel")) return res.end("You're not authorized to do this.")
   console.log("passed 2nd check")
   req.session.authed = true
