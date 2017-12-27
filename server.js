@@ -6,6 +6,9 @@ var bodyParser = require('body-parser');
 var hashPassword = require("./helpers/hashPassword");
 var session = require("express-session");
 var si = require("systeminformation");
+var jwt = require("jsonwebtoken");
+var fs = require("fs");
+var csp = require("chmod-style-permissions");
 
 var sessionMiddleware = session({
   secret: Math.floor(Math.random() * 100000000000).toString(16)
@@ -23,7 +26,7 @@ app.use(express.static("assets"))
 server.listen(8008);
 
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/html/login.html');
+  res.redirect("http://jwte.ch:5678/requestauth?redirect=" + encodeURIComponent("http://jwte.ch:8008/callback?token=$token"))
 });
 app.get('/panel', function (req, res) {
   if (req.session.authed) {
@@ -48,6 +51,19 @@ app.get('/m_manager', function (req, res) {
   }
 });
 
+app.get("/callback", (req, res) => {
+  var token = req.query.token;
+  if(!token) return res.end("go away");
+  try {
+    var tokendata = jwt.verify(token, fs.readFileSync("./public.key"))
+  } catch (e) {
+    return res.end("go away")
+  }
+  if (!csp.hasPerm(tokendata.permissions, "nightborn.panel")) return res.end("You're not authorized to do this.")
+  req.session.authed = true
+  req.session.username = tokendata.username;
+  res.redirect("/panel")
+})
 app.post("/auth", (req, res) => {
   var correctPw = "f1cb22cb622f3dd9d1f5e06cc2a1d0e920c40e6a4c2d2bf3dd0c7b52e975d6d9";
   var ecorrect = "63281834752dee45991cd499ff23039a814c0db2ce3c03a73aaab0c985da7823";
