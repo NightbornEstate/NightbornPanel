@@ -56,10 +56,13 @@ app.get("/callback", (req, res) => {
   if(!token) return res.end("go away");
   try {
     var tokendata = jwt.verify(token, fs.readFileSync("./public.key"))
+    console.log("passed 1st check")
   } catch (e) {
+    console.log(e)
     return res.end("go away")
   }
   if (!csp.hasPerm(tokendata.permissions, "nightborn.panel")) return res.end("You're not authorized to do this.")
+  console.log("passed 2nd check")
   req.session.authed = true
   req.session.username = tokendata.username;
   res.redirect("/panel")
