@@ -31,7 +31,7 @@ function requirePermission() {
    */
   return function (req, res, next) {
     _arguments.every(node => {
-      return csp.hasPerm(request.session.user.permissions, node)
+      return csp.hasPerm(req.session.user.permissions, node)
     }) ? next() : res.redirect("/")
   }
 }
