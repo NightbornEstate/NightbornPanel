@@ -63,8 +63,8 @@
                         <h4 class="card-title" id="status">Janitor Violations</h4>
                         <h5 v-if="fmember.violations.length == 0">This user has never used racism</h5>
                         <ul class="list-group" v-if="fmember.violations.length > 0">
-                            <li class="list-group-item" v-bind:class="{ 'text-muted': vio.archived, 'text-danger': !vio.archived }" v-for="vio in fmember.violations">
-                              {{ vio.toString() }}
+                            <li class="list-group-item bg-dark" v-bind:class="{ 'text-muted': vio.archived, 'text-danger': !vio.archived }" v-for="vio in fmember.violations">
+                              {{ vio.manual ? "Manual Violation" : vio.messageContent }}
                             </li>
                         </ul>
                     </div>
