@@ -24,7 +24,8 @@ app.use(bodyParser.urlencoded({
 }));
 
 function requirePermission() {
-  var _arguments = arguments;
+  console.log(arguments)
+  var _arguments = Array.from(arguments);
   /**
    * @type {function}
    */
