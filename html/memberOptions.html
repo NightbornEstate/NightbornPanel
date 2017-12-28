@@ -2,209 +2,216 @@
 <html lang="en">
 
 <head>
-  <title> Nightborn Panel </title>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title> Nightborn Panel </title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
-    crossorigin="anonymous">
-  <style>
-    .noBorderPls {
-      border: none !important;
-    }
-  </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <style>
+        .noBorderPls {
+            border: none !important;
+        }
+    </style>
 </head>
 
 <body style="background-color: rgb(40, 44, 52)">
-  <nav class="navbar navbar-expand-sm navbar-dark text-white" style="background-color: rgb(30, 33, 40); margin-bottom:20px;">
-    <a class="navbar-brand" href="#">Nightborn Panel</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-      aria-expanded="false" aria-label="Toggle navigation">
+    <nav class="navbar navbar-expand-sm navbar-dark text-white" style="background-color: rgb(30, 33, 40); margin-bottom:20px;">
+        <a class="navbar-brand" href="#">Nightborn Panel</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/panel">Home
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/panel">Home
           </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/botlogs">Bot logs</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-danger" href="/m_manager">Member Manager</a>
-        </li>
-      </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/botlogs">Bot logs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-danger" href="/m_manager">Member Manager</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid" id="v">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="card text-white" style="background-color: rgb(30, 33, 40);">
+                    <div class="card-body">
+                        <h4 class="card-title">Choose Member</h4>
+                        <div class="form-group">
+                            <input class="form-control" id="mem" placeholder="Member">
+                            <small id="emailHelp" class="form-text text-muted">Enter either a username#discrim or an id.</small>
+                        </div>
+                        <button id="srch" class="btn btn-outline-primary">Find</button>
+                    </div>
+                </div>
+                <br>
+                <div class="card text-white" v-if="found" style="background-color: rgb(30, 33, 40);">
+                    <div class="card-body">
+                        <h4 class="card-title" id="status">Souls</h4>
+                        <h5>{{ fmember.balance }}👻</h5>
+                    </div>
+                </div>
+                <div class="card text-white" v-if="found" style="background-color: rgb(30, 33, 40);">
+                    <div class="card-body">
+                        <h4 class="card-title" id="status">Janitor Violations</h4>
+                        <h5 v-if="fmember.violations.length == 0">This user has never used racism</h5>
+                        <ul class="list-group" v-if="fmember.violations.length > 0">
+                            <li class="list-group-item" v-bind:class="{ 'text-muted': vio.archived, 'text-danger': !vio.archived }" v-for="vio in fmember.violations">
+                              {{ vio.toString() }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <br>
+            </div>
+            <div class="col-sm-8">
+                <div v-if="!found" class="card text-white" style="background-color: rgb(30, 33, 40);">
+                    <div class="card-body">
+                        <h4 class="card-title" id="status">No member selected</h4>
+                    </div>
+                </div>
+                <div v-if="found">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card text-white" style="background-color: rgb(30, 33, 40);">
+                                <div class="card-body">
+                                    <h4 v-bind:style="{color: fmember.displayHexColor}" class="card-title" id="status">@{{ fmember.displayName }}</h4>
+                                    <h5 v-if="fmember.user.bot" class="text-primary">[BOT]</h5>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="card text-white" style="background-color: rgb(30, 33, 40);">
+                                <div class="card-body">
+                                    <h4 class="card-title" id="status">Discord Info</h4>
+                                    <table class="table">
+                                        <tr>
+                                            <th class="noBorderPls">
+                                                Tag
+                                            </th>
+                                            <td class="noBorderPls">
+                                                {{ fmember.user.tag }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="noBorderPls">
+                                                ID
+                                            </th>
+                                            <td class="noBorderPls">
+                                                {{ fmember.user.id }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="noBorderPls">
+                                                Account created
+                                            </th>
+                                            <td class="noBorderPls">
+                                                {{ moment(fmember.user.createdTimestamp).fromNow() }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card text-white" style="background-color: rgb(30, 33, 40);">
+                                <div class="card-body">
+                                    <h4 class="card-title" id="status">Member Info</h4>
+                                    <table class="table">
+                                        <tr>
+                                            <th class="noBorderPls">
+                                                Hoist
+                                            </th>
+                                            <td class="noBorderPls">
+                                                {{ fmember.hoistRole }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="noBorderPls">
+                                                Color
+                                            </th>
+                                            <td class="noBorderPls" v-bind:style="{color: fmember.displayHexColor}">
+                                                {{ fmember.displayHexColor }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="noBorderPls">
+                                                Joined Nightborn
+                                            </th>
+                                            <td class="noBorderPls">
+                                                {{ moment(fmember.joinedTimestamp).fromNow() }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="noBorderPls">
+                                                Roles
+                                            </th>
+                                            <td class="noBorderPls">
+                                                {{ fmember.roles.length }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="noBorderPls">
+                                                Nickname
+                                            </th>
+                                            <td class="noBorderPls">
+                                                {{ fmember.displayName }}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="noBorderPls">
+                                                Highest Role
+                                            </th>
+                                            <td class="noBorderPls">
+                                                {{ fmember.highestRole }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </nav>
-  <div class="container-fluid" id="v">
-    <div class="row">
-      <div class="col-sm-4">
-        <div class="card text-white" style="background-color: rgb(30, 33, 40);">
-          <div class="card-body">
-            <h4 class="card-title">Choose Member</h4>
-            <div class="form-group">
-              <input class="form-control" id="mem" placeholder="Member">
-              <small id="emailHelp" class="form-text text-muted">Enter either a username#discrim or an id.</small>
-            </div>
-            <button id="srch" class="btn btn-outline-primary">Find</button>
-          </div>
-        </div>
-        <br>
-        <div class="card text-white" v-if="found" style="background-color: rgb(30, 33, 40);">
-          <div class="card-body">
-            <h4 class="card-title" id="status">Souls</h4>
-            <h5>{{ fmember.balance }}👻</h5>
-          </div>
-        </div>
-        <br>
-      </div>
-      <div class="col-sm-8">
-        <div v-if="!found" class="card text-white" style="background-color: rgb(30, 33, 40);">
-          <div class="card-body">
-            <h4 class="card-title" id="status">No member selected</h4>
-          </div>
-        </div>
-        <div v-if="found">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="card text-white" style="background-color: rgb(30, 33, 40);">
-                <div class="card-body">
-                  <h4 v-bind:style="{color: fmember.displayHexColor}" class="card-title" id="status">@{{ fmember.displayName }}</h4>
-                  <h5 v-if="fmember.user.bot" class="text-primary">[BOT]</h5>
-                </div>
-              </div>
-              <br>
-              <div class="card text-white" style="background-color: rgb(30, 33, 40);">
-                <div class="card-body">
-                  <h4 class="card-title" id="status">Discord Info</h4>
-                  <table class="table">
-                    <tr>
-                      <th class="noBorderPls">
-                        Tag
-                      </th>
-                      <td class="noBorderPls">
-                        {{ fmember.user.tag }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="noBorderPls">
-                        ID
-                      </th>
-                      <td class="noBorderPls">
-                        {{ fmember.user.id }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="noBorderPls">
-                        Account created
-                      </th>
-                      <td class="noBorderPls">
-                        {{ moment(fmember.user.createdTimestamp).fromNow() }}
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card text-white" style="background-color: rgb(30, 33, 40);">
-                <div class="card-body">
-                  <h4 class="card-title" id="status">Member Info</h4>
-                  <table class="table">
-                    <tr>
-                      <th class="noBorderPls">
-                        Hoist
-                      </th>
-                      <td class="noBorderPls">
-                        {{ fmember.hoistRole }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="noBorderPls">
-                        Color
-                      </th>
-                      <td class="noBorderPls" v-bind:style="{color: fmember.displayHexColor}">
-                        {{ fmember.displayHexColor }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="noBorderPls">
-                        Joined Nightborn
-                      </th>
-                      <td class="noBorderPls">
-                        {{ moment(fmember.joinedTimestamp).fromNow() }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="noBorderPls">
-                        Roles
-                      </th>
-                      <td class="noBorderPls">
-                        {{ fmember.roles.length }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="noBorderPls">
-                        Nickname
-                      </th>
-                      <td class="noBorderPls">
-                        {{ fmember.displayName }}
-                      </td>
-                    </tr>
-                    <tr>
-                      <th class="noBorderPls">
-                        Highest Role
-                      </th>
-                      <td class="noBorderPls">
-                        {{ fmember.highestRole }}
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-    crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-    crossorigin="anonymous"></script>
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="https://unpkg.com/vue"></script>
-  <script>
-    var app3 = new Vue({
-      el: '#v',
-      data: {
-        found: false,
-        fmember: null,
-        moment: moment
-      }
-    })
-    const socket = io('');
-    $("#srch").click(function () {
-      socket.emit("member.find", {
-        toFind: $("#mem").val()
-      })
-    })
-    socket.on("member.found", function (r) {
-      if (!r.found) return;
-      var mem = r.found;
-      console.log(mem);
-      app3.fmember = r.found;
-      app3.found = true
-    })
-  </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+        var app3 = new Vue({
+            el: '#v',
+            data: {
+                found: false,
+                fmember: null,
+                moment: moment
+            }
+        })
+        const socket = io('');
+        $("#srch").click(function() {
+            socket.emit("member.find", {
+                toFind: $("#mem").val()
+            })
+        })
+        socket.on("member.found", function(r) {
+            if (!r.found) return;
+            var mem = r.found;
+            console.log(mem);
+            app3.fmember = r.found;
+            app3.found = true
+        })
+    </script>
 </body>
 
 </html>
